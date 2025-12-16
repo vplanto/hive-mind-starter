@@ -4,6 +4,8 @@
  * 
  * @class Renderer
  */
+import { WORLD_SIZE } from '../config.js';
+
 export class Renderer {
   /**
    * Creates a new Renderer instance.
@@ -12,18 +14,41 @@ export class Renderer {
    * @param {number} cellSize - The size of each grid cell in pixels
    */
   constructor(canvas, cellSize) {
-    // TODO: Initialize renderer with canvas context
-    // Similar to initializing a graphics context in C++: `SDL_Renderer* renderer`
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.cellSize = cellSize;
+    
+    // Set canvas size to match grid dimensions
+    this.canvas.width = WORLD_SIZE * cellSize;
+    this.canvas.height = WORLD_SIZE * cellSize;
   }
 
   /**
-   * Clears the entire canvas.
-   * 
-   * @param {string} color - The background color (default: '#000000')
+   * Draws the toolbar UI with game information.
+   * This method is kept fully implemented as UI coding is tedious.
+   * Similar to drawing a HUD in C++: `void drawHUD()`
    */
-  clear(color = '#000000') {
-    // TODO: Clear canvas with background color
-    // Similar to `SDL_RenderClear(renderer)` in C++
+  drawToolbar() {
+    const toolbarHeight = 60;
+    const toolbarY = this.canvas.height - toolbarHeight;
+    
+    // Draw toolbar background
+    this.ctx.fillStyle = '#2a2a2a';
+    this.ctx.fillRect(0, toolbarY, this.canvas.width, toolbarHeight);
+    
+    // Draw border
+    this.ctx.strokeStyle = '#444';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(0, toolbarY, this.canvas.width, toolbarHeight);
+    
+    // Draw text
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = '14px monospace';
+    this.ctx.textAlign = 'left';
+    this.ctx.textBaseline = 'middle';
+    
+    // TODO: Add dynamic game stats (ant counts, scores, etc.)
+    this.ctx.fillText('Hive Mind Simulation', 10, toolbarY + toolbarHeight / 2);
   }
 
   /**
@@ -34,13 +59,53 @@ export class Renderer {
    * @param {Ant[]} ants - Array of all ants to render
    */
   render(grid, ants) {
-    // TODO: Implement full scene rendering
-    // This should translate the Matrix State into pixel data
-    // Similar to a render pass in C++: iterate through entities and draw them
+    // Get ImageData for pixel manipulation (high performance)
+    // Similar to getting a pixel buffer in C++: `SDL_LockTexture(texture, ...)`
+    const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    const data = imageData.data;
+    
+    // TODO: Render grid (Walls, Food, Pheromones)
+    // Remove the inner loops that manipulate pixels - students will implement this
+    // Example structure:
+    // for (let y = 0; y < grid.getHeight(); y++) {
+    //   for (let x = 0; x < grid.getWidth(); x++) {
+    //     const cellValue = grid.get(x, y);
+    //     const pheromone = grid.getPheromone(x, y);
+    //     // Calculate pixel color based on cellValue and pheromone
+    //     // Set pixel in data array: data[index] = r, data[index+1] = g, etc.
+    //   }
+    // }
+    
+    // Put ImageData back to canvas
+    this.ctx.putImageData(imageData, 0, 0);
+    
+    // TODO: Render ants
+    // Remove ant rendering loops - students will implement this
+    // Example structure:
+    // for (const ant of ants) {
+    //   if (ant.isAlive()) {
+    //     const x = ant.getX() * this.cellSize;
+    //     const y = ant.getY() * this.cellSize;
+    //     // Draw ant sprite/shape
+    //   }
+    // }
+    
+    // Draw toolbar on top
+    this.drawToolbar();
   }
 
   /**
-   * Renders a single grid cell.
+   * Clears the entire canvas.
+   * 
+   * @param {string} color - The background color (default: '#000000')
+   */
+  clear(color = '#000000') {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * Renders a single grid cell (legacy method, not used in main render loop).
    * 
    * @param {number} x - The x coordinate of the cell
    * @param {number} y - The y coordinate of the cell
@@ -52,7 +117,7 @@ export class Renderer {
   }
 
   /**
-   * Renders an ant at its current position.
+   * Renders an ant at its current position (legacy method, not used in main render loop).
    * 
    * @param {Ant} ant - The ant to render
    */
@@ -68,8 +133,8 @@ export class Renderer {
    * @param {number} height - The grid height in cells
    */
   resize(width, height) {
-    // TODO: Adjust canvas dimensions
-    // Similar to setting viewport in C++: `glViewport(0, 0, width, height)`
+    this.canvas.width = width * this.cellSize;
+    this.canvas.height = height * this.cellSize;
   }
 
   /**
@@ -78,8 +143,6 @@ export class Renderer {
    * @returns {CanvasRenderingContext2D} The canvas 2D context
    */
   getContext() {
-    // TODO: Return the canvas 2D context
-    // Similar to getting a graphics context in C++: `SDL_GetRenderer(renderer)`
+    return this.ctx;
   }
 }
-

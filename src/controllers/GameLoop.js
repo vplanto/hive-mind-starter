@@ -12,8 +12,11 @@ export class GameLoop {
    * @param {Function} renderCallback - Function called each frame to render the scene
    */
   constructor(updateCallback, renderCallback) {
-    // TODO: Initialize game loop with callbacks
-    // Similar to initializing a game loop in C++: `GameLoop loop(update, render)`
+    this.updateCallback = updateCallback;
+    this.renderCallback = renderCallback;
+    this.isRunning = false;
+    this.animationFrameId = null;
+    this.lastTime = 0;
   }
 
   /**
@@ -21,17 +24,28 @@ export class GameLoop {
    * Uses requestAnimationFrame for smooth 60 FPS rendering.
    */
   start() {
-    // TODO: Start the animation frame loop
-    // Similar to starting a game loop in C++: `while (running) { update(); render(); }`
-    // In JS, we use requestAnimationFrame instead of a blocking loop
+    if (this.isRunning) {
+      return;
+    }
+    
+    this.isRunning = true;
+    this.lastTime = performance.now();
+    this._loop(performance.now());
   }
 
   /**
    * Stops the game loop.
    */
   stop() {
-    // TODO: Stop the animation frame loop
-    // Similar to setting a flag in C++: `running = false;`
+    if (!this.isRunning) {
+      return;
+    }
+    
+    this.isRunning = false;
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
   }
 
   /**
@@ -39,23 +53,38 @@ export class GameLoop {
    * 
    * @returns {boolean} True if the loop is running, false otherwise
    */
-  isRunning() {
-    // TODO: Return running state
+  getRunning() {
+    return this.isRunning;
   }
 
   /**
    * The main loop function called by requestAnimationFrame.
    * This decouples Update() from Draw() to maintain 60 FPS.
+   * Similar to a game loop in C++: `while (running) { update(); render(); }`
    * 
    * @param {number} timestamp - The current timestamp from requestAnimationFrame
    * @private
    */
   _loop(timestamp) {
-    // TODO: Implement frame timing and delta time calculation
+    if (!this.isRunning) {
+      return;
+    }
+    
+    // Calculate delta time (time since last frame)
     // Similar to calculating deltaTime in C++: `deltaTime = currentTime - lastTime`
-    // TODO: Call updateCallback for game logic
-    // TODO: Call renderCallback for rendering
-    // TODO: Schedule next frame with requestAnimationFrame
+    const deltaTime = timestamp - this.lastTime;
+    this.lastTime = timestamp;
+    
+    // Call update callback for game logic
+    // Similar to calling update() in C++: `gameState.update(deltaTime)`
+    this.updateCallback();
+    
+    // Call render callback for rendering
+    // Similar to calling render() in C++: `renderer.render(gameState)`
+    this.renderCallback();
+    
+    // Schedule next frame with requestAnimationFrame
+    // Similar to continuing the loop in C++: `continue;` (but non-blocking in JS)
+    this.animationFrameId = requestAnimationFrame((ts) => this._loop(ts));
   }
 }
-

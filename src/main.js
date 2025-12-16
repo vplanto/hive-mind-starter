@@ -4,24 +4,48 @@
  */
 
 import { Grid } from './models/Grid.js';
-import { Ant } from './entities/Ant.js';
+import { State } from './models/State.js';
 import { Renderer } from './views/Renderer.js';
 import { GameLoop } from './controllers/GameLoop.js';
-import { WORLD_SIZE, ANT_COUNT } from './config.js';
+import { WORLD_SIZE } from './config.js';
 
 /**
  * Initializes and starts the simulation.
  * Similar to the main() function in C++ programs.
  */
 function init() {
-  // TODO: Get canvas element from DOM
-  // TODO: Initialize Grid with dimensions (use WORLD_SIZE from config.js)
-  //   Example: new Grid(WORLD_SIZE, WORLD_SIZE)
-  // TODO: Initialize Renderer with canvas
-  // TODO: Create initial Ant entities (use ANT_COUNT from config.js)
-  //   Example: for (let i = 0; i < ANT_COUNT; i++) { ... }
-  // TODO: Set up GameLoop with update and render callbacks
-  // TODO: Start the game loop
+  // Get canvas element from DOM
+  const canvas = document.getElementById('gameCanvas');
+  if (!canvas) {
+    console.error('Canvas element not found!');
+    return;
+  }
+
+  // Initialize Grid with dimensions
+  // Initialize State (which contains Grid)
+  const state = new State();
+  
+  // Initialize Renderer with canvas
+  const cellSize = 8; // Pixels per grid cell
+  const renderer = new Renderer(canvas, cellSize);
+  
+  // Initialize game state
+  state.init();
+  
+  // Set up GameLoop with update and render callbacks
+  const gameLoop = new GameLoop(
+    () => {
+      // Update callback - called each frame
+      state.update();
+    },
+    () => {
+      // Render callback - called each frame
+      renderer.render(state.getGrid(), state.getAnts());
+    }
+  );
+  
+  // Start the game loop
+  gameLoop.start();
 }
 
 // Start the application when DOM is ready
@@ -31,4 +55,3 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-

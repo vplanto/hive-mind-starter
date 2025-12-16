@@ -4,6 +4,9 @@
  * 
  * @class Ant
  */
+import { update as blueAlgo } from '../algorithms/BlueAlgorithm.js';
+import { update as redAlgo } from '../algorithms/RedAlgorithm.js';
+
 export class Ant {
   /**
    * Creates a new Ant instance.
@@ -11,10 +14,14 @@ export class Ant {
    * @param {number} x - Initial x coordinate
    * @param {number} y - Initial y coordinate
    * @param {number} id - Unique identifier for this ant
+   * @param {number} teamId - Team identifier (0 = Blue, 1 = Red)
    */
-  constructor(x, y, id) {
-    // TODO: Initialize ant properties
-    // Similar to a struct in C++: `struct Ant { int x, y, id; ... }`
+  constructor(x, y, id, teamId) {
+    this.x = x;
+    this.y = y;
+    this.id = id;
+    this.teamId = teamId;
+    // TODO: Initialize other ant properties (health, state, etc.)
   }
 
   /**
@@ -26,9 +33,11 @@ export class Ant {
    * @returns {Object|null} The action to perform, or null if no action
    */
   update(view, grid) {
-    // TODO: Implement ant decision logic
-    // This should be a pure function that takes View and returns Action
-    // Similar to a method in C++: `Action Ant::decide(const View& view) const`
+    // TODO: Delegate logic to the appropriate algorithm based on teamId
+    
+    // TODO: Apply the resulting action to change x,y coordinates
+    
+    return null;
   }
 
   /**
@@ -37,7 +46,7 @@ export class Ant {
    * @returns {number} The x coordinate
    */
   getX() {
-    // TODO: Return current x position
+    return this.x;
   }
 
   /**
@@ -46,7 +55,7 @@ export class Ant {
    * @returns {number} The y coordinate
    */
   getY() {
-    // TODO: Return current y position
+    return this.y;
   }
 
   /**
@@ -55,7 +64,16 @@ export class Ant {
    * @returns {number} The ant's ID
    */
   getId() {
-    // TODO: Return ant ID
+    return this.id;
+  }
+
+  /**
+   * Gets the team identifier.
+   * 
+   * @returns {number} The team ID (0 = Blue, 1 = Red)
+   */
+  getTeamId() {
+    return this.teamId;
   }
 
   /**
@@ -65,8 +83,8 @@ export class Ant {
    * @param {number} newY - The new y coordinate
    */
   moveTo(newX, newY) {
-    // TODO: Update ant position
-    // Similar to setting struct members in C++: `ant.x = newX; ant.y = newY;`
+    this.x = newX;
+    this.y = newY;
   }
 
   /**
@@ -83,7 +101,5 @@ export class Ant {
    */
   kill() {
     // TODO: Set ant to dead state
-    // Similar to setting a flag in C++: `ant.alive = false;`
   }
 }
-

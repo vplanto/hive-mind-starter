@@ -12,32 +12,96 @@ export class Grid {
    * @param {number} height - The height of the grid (number of rows)
    */
   constructor(width, height) {
-    // TODO: Initialize the 2D grid structure
-    // Similar to allocating a 2D array in C++: `int** grid = new int*[height]`
+    this.width = width;
+    this.height = height;
+    
+    // TODO: Allocate memory for static grid (Walls/Food)
+    // Students should choose the data structure (e.g., Uint8Array for performance)
+    
+    // TODO: Allocate memory for pheromones
+    // Students should choose the data structure (e.g., Uint8Array for performance)
   }
 
   /**
-   * Gets the value at a specific grid position.
+   * Generates the level using procedural generation.
+   * Similar to a level generation function in C++: `void generateLevel()`
+   */
+  generateLevel() {
+    // TODO: Implement cave generation
+  }
+
+  /**
+   * Gets the static grid value at a specific position.
+   * 
+   * @param {number} x - The x coordinate (column)
+   * @param {number} y - The y coordinate (row)
+   * @returns {number|undefined} The value at the specified position
+   */
+  get(x, y) {
+    // TODO: Implement cell retrieval with bounds checking
+  }
+
+  /**
+   * Sets the static grid value at a specific position.
+   * 
+   * @param {number} x - The x coordinate (column)
+   * @param {number} y - The y coordinate (row)
+   * @param {number} value - The value to set
+   */
+  set(x, y, value) {
+    // TODO: Implement cell assignment with bounds checking
+  }
+
+  /**
+   * Applies decay to pheromones across the entire grid.
+   * Called once per game tick to fade pheromone trails.
+   */
+  decay() {
+    // TODO: Implement pheromone decay
+  }
+
+  /**
+   * Gets the pheromone value at a specific position.
+   * 
+   * @param {number} x - The x coordinate (column)
+   * @param {number} y - The y coordinate (row)
+   * @returns {number} The pheromone intensity (0-255)
+   */
+  getPheromone(x, y) {
+    // TODO: Return pheromone value with bounds checking
+  }
+
+  /**
+   * Sets the pheromone value at a specific position.
+   * 
+   * @param {number} x - The x coordinate (column)
+   * @param {number} y - The y coordinate (row)
+   * @param {number} value - The pheromone intensity (0-255)
+   */
+  setPheromone(x, y, value) {
+    // TODO: Set pheromone value with bounds checking and clamping
+  }
+
+  /**
+   * Gets the value at a specific grid position (legacy method, use get() instead).
    * 
    * @param {number} x - The x coordinate (column)
    * @param {number} y - The y coordinate (row)
    * @returns {number|undefined} The value at the specified position
    */
   getCell(x, y) {
-    // TODO: Implement cell retrieval with bounds checking
-    // Similar to array access in C++: `grid[y][x]` with bounds validation
+    return this.get(x, y);
   }
 
   /**
-   * Sets the value at a specific grid position.
+   * Sets the value at a specific grid position (legacy method, use set() instead).
    * 
    * @param {number} x - The x coordinate (column)
    * @param {number} y - The y coordinate (row)
    * @param {number} value - The value to set
    */
   setCell(x, y, value) {
-    // TODO: Implement cell assignment with bounds checking
-    // Similar to array assignment in C++: `grid[y][x] = value`
+    this.set(x, y, value);
   }
 
   /**
@@ -49,7 +113,6 @@ export class Grid {
    */
   isValidPosition(x, y) {
     // TODO: Implement bounds checking
-    // Similar to validating array indices in C++ before access
   }
 
   /**
@@ -77,7 +140,5 @@ export class Grid {
    */
   clear(defaultValue = 0) {
     // TODO: Reset all cells to default value
-    // Similar to memset in C++: `memset(grid, 0, width * height * sizeof(int))`
   }
 }
-

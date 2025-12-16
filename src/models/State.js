@@ -4,13 +4,41 @@
  * 
  * @class State
  */
+import { Grid } from './Grid.js';
+import { Ant } from '../entities/Ant.js';
+import { WORLD_SIZE, ANT_COUNT } from '../config.js';
+
 export class State {
   /**
    * Creates a new State instance.
    */
   constructor() {
-    // TODO: Initialize state properties
-    // Similar to a struct in C++: `struct GameState { Grid* map; vector<Ant> ants; ... }`
+    this.grid = new Grid(WORLD_SIZE, WORLD_SIZE);
+    this.ants = [];
+    // TODO: Initialize other state properties (game status, scores, etc.)
+  }
+
+  /**
+   * Initializes the game state (spawns ants, generates level).
+   * Similar to an initialization function in C++: `void init()`
+   */
+  init() {
+    // Generate the level
+    this.grid.generateLevel();
+    
+    // TODO: Spawn initial ants
+  }
+
+  /**
+   * Updates the game state for one game tick.
+   * Similar to an update function in C++: `void update()`
+   */
+  update() {
+    // TODO: Process pheromone decay
+    
+    // TODO: Update all ants
+    
+    // TODO: Remove dead ants
   }
 
   /**
@@ -19,7 +47,7 @@ export class State {
    * @returns {Grid} The game grid
    */
   getGrid() {
-    // TODO: Return grid reference
+    return this.grid;
   }
 
   /**
@@ -28,7 +56,7 @@ export class State {
    * @returns {Ant[]} Array of all ants
    */
   getAnts() {
-    // TODO: Return ants array
+    return this.ants;
   }
 
   /**
@@ -37,8 +65,7 @@ export class State {
    * @param {Ant} ant - The ant to add
    */
   addAnt(ant) {
-    // TODO: Add ant to collection
-    // Similar to pushing to vector in C++: `ants.push_back(ant)`
+    this.ants.push(ant);
   }
 
   /**
@@ -47,8 +74,7 @@ export class State {
    * @param {number} antId - The ID of the ant to remove
    */
   removeAnt(antId) {
-    // TODO: Remove ant by ID
-    // Similar to erasing from vector in C++: `ants.erase(remove_if(...))`
+    this.ants = this.ants.filter(ant => ant.getId() !== antId);
   }
 
   /**
@@ -58,7 +84,7 @@ export class State {
    */
   save() {
     // TODO: Serialize state and save to localStorage
-    // Similar to writing to file in C++: `fwrite(&state, sizeof(State), 1, file)`
+    return false;
   }
 
   /**
@@ -68,15 +94,15 @@ export class State {
    */
   load() {
     // TODO: Deserialize state from localStorage
-    // Similar to reading from file in C++: `fread(&state, sizeof(State), 1, file)`
+    return false;
   }
 
   /**
    * Resets the state to initial values.
    */
   reset() {
-    // TODO: Reset all state to initial values
-    // Similar to reinitializing a struct in C++: `state = GameState{}`
+    this.ants = [];
+    this.grid.clear();
+    this.init();
   }
 }
-
