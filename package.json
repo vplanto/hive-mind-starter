@@ -2,12 +2,15 @@
   "name": "hive-mind",
   "version": "0.0.1",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^8.0.8"
+    "vite": "^5.4.21"
   }
 }
